@@ -124,9 +124,12 @@
                     See
                      https://github.com/Arakula/f9dasm/issues/24
                     for details.
+   V1.84 2024-09-28 Print characters 'c with high bit set as 'c|$80 (AS/A09-compatible)
+                    (Orig. added 2019-07-27 in alternate 1.79 version.)
+
 */
 
-#define ID  "1.83"
+#define ID  "1.84"
 
 #if RB_VARIANT
 #define VERSION ID "-RB"
@@ -1930,7 +1933,14 @@ if ((nDigits == 2) &&                   /* if 2-digit value                  */
     sprintf(s, "'%c", W);
 #endif
   else
-    sprintf(s, "$%02x", W);
+    if (isprint(W & 0x7f))
+#if RB_VARIANT
+      sprintf(s, "'%c'|$80", W & 0x7f);
+#else
+      sprintf(s, "'%c|$80", W & 0x7f);
+#endif
+    else
+      sprintf(s, "$%02x", W);
   }
 else if (IS_BINARY(addr))               /* if a binary                       */
   {
