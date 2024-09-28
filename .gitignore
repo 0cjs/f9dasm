@@ -1,4 +1,5 @@
 #   Unix binaries built by Makefile
+/cmd2mot
 /f9dasm
 /hex2bin
 /mot2bin
